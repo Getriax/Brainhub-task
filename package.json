@@ -4,11 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --require ./setup.tests.js --compilers js:babel-core/register-t 5000 \"./{,!(node_modules)/**/}*.spec.js\"",
     "test:node": "mocha -t 5000 \"./{,!(node_modules|app)/**/}*.spec.js\"",
     "test:app": "mocha --require ./setup.tests.js --compilers js:babel-core/register -t 5000 \"./app/**/*.spec.js\"",
     "start": "webpack --mode production --config webpack.config.prod.js && node server.js",
-    "heroku": "heroku local web",
     "app": "webpack-serve ./webpack.config.dev.js --hot-client --open",
     "build:app": "webpack --mode production --config webpack.config.prod.js"
   },
