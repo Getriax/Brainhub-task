@@ -58,7 +58,7 @@ typings/
 .next
 
 #IDE
-.idea
+.idea/
 
 #React files
 app/

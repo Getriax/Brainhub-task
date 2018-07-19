@@ -1,4 +1,8 @@
+const webpack = require('webpack');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const path = require('path');
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
@@ -6,14 +10,14 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
     filename: "./index.html"
 });
 
+const GLOBALS = {
+    'process.env.NODE_ENV': JSON.stringify('production')
+};
+
 module.exports = {
     entry: {
         vendor: ['react', 'react-dom'],
-        main: [
-            'react-hot-loader/patch',
-            'babel-runtime/regenerator',
-            './app/index.jsx',
-        ],
+        main: './app/index.jsx',
     },
     mode: 'development',
     output: {
@@ -25,27 +29,24 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js(x)*$/,
+                test: /\.js(x)?$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: ["env", "react"]
-                    }
+                    loader: "babel-loader"
                 }
             },
             {
                 test: /\.(c|sc|)ss$/,
                 use: [
                     {
-                        loader: "style-loader"
+                        loader: MiniCssExtractPlugin.loader,
                     },
                     {
                         loader: "css-loader",
                         options: {
                             modules: true,
                             importLoaders: 1,
-                            localIdentName: "[name]_[local]_[hash:base64]",
+                            localIdentName: "[local]",
                             sourceMap: true,
                             minimize: true
                         }
@@ -65,8 +66,21 @@ module.exports = {
                         loader: 'sass-loader' // compiles Sass to CSS
                     }
                 ]
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                use: [
+                    'url-loader?limit=1000',
+                    'img-loader'
+                ]
             }
         ]
     },
-    plugins: [htmlWebpackPlugin]
+    plugins: [
+        htmlWebpackPlugin,
+        new webpack.DefinePlugin(GLOBALS),
+        new UglifyJsPlugin(),
+        new MiniCssExtractPlugin(),
+        new OptimizeCSSAssetsPlugin({})
+    ]
 };
