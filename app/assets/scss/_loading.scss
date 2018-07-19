@@ -1,0 +1,14 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 20vw;
+  height: 8vh;
+  position: fixed;
+  background: whitesmoke;
+  left: calc(50% - 10vw);
+  top: calc(50% - 5vh);
+  z-index: 100;
+  border-radius: 5px;
+  box-shadow: 0 2px 1px grey;
+}

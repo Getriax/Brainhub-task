@@ -59,6 +59,3 @@ typings/
 
 #IDE
 .idea/
-
-#React files
-app/
